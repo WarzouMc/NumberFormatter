@@ -1,0 +1,10 @@
+This code is so simple at use.
+
+In first you create the class.
+Then copy and paste the code.
+
+For get your new number (string form), just do :
+
+new NumbersSeparator().transform(int or long);
+
+!this methode return a string!
