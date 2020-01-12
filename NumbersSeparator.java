@@ -1,52 +1,52 @@
-package fr.WarzouMc.MonaiServGroup.utils.stringTransformer;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NumbersSeparator {
 
-    public String transformer(int i) {
-        String i_to_string = Integer.toString(i);
-        int lenght = i_to_string.length();
-        List<Character> l_c = new ArrayList<>();
+    private char separator = ' ';
+    public NumbersSeparator(char separator){
+        this.separator = separator;
+    }
 
+    public NumbersSeparator(){}
+
+    public String transformer(int i) {
+        String intToString = Integer.toString(i);
+        int length = intToString.length();
+        List<Character> characterList = new ArrayList<>();
         int point = 0;
-        String returnString = "";
-        for (int j = lenght-1; j > -1 ; j--) {
+        for (int j = length-1; j > -1 ; j--) {
             point++;
-            l_c.add(i_to_string.charAt(j));
+            characterList.add(intToString.charAt(j));
             if (j != 0 && point == 3){
                 point = 0;
-                l_c.add(' ');
+                characterList.add(this.separator);
             }
         }
-
-        for (int j = l_c.size()-1; j > -1; j--) {
-            returnString = returnString + l_c.get(j);
-        }
-        return returnString;
+        StringBuilder returnString = new StringBuilder();
+        Collections.reverse(characterList);
+        characterList.forEach(returnString::append);
+        return returnString.toString();
     }
 
     public String transformer(long l) {
-        String i_to_string = Long.toString(l);
-        int lenght = i_to_string.length();
-        List<Character> l_c = new ArrayList<>();
-
+        String longToString = Long.toString(l);
+        int length = longToString.length();
+        List<Character> characterList = new ArrayList<>();
         int point = 0;
-        String returnString = "";
-        for (int j = lenght-1; j > -1 ; j--) {
+        for (int j = length-1; j > -1 ; j--) {
             point++;
-            l_c.add(i_to_string.charAt(j));
+            characterList.add(longToString.charAt(j));
             if (j != 0 && point == 3){
                 point = 0;
-                l_c.add(' ');
+                characterList.add(this.separator);
             }
         }
-
-        for (int j = l_c.size()-1; j > -1; j--) {
-            returnString = returnString + l_c.get(j);
-        }
-        return returnString;
+        StringBuilder returnString = new StringBuilder();
+        Collections.reverse(characterList);
+        characterList.forEach(returnString::append);
+        return returnString.toString();
     }
 
 }
