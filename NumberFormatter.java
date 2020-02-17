@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * This class consist to transform number in another format number.
  * @author WarzouMc
- * @version 3.0
+ * @version 4.0
  */
 public class NumberFormatter {
 
@@ -15,13 +15,14 @@ public class NumberFormatter {
         /**
          * Default separator character
          */
-        private char separator = ' ';
+        private char separator;
 
         /**
          * Call class whit default separator character
          */
-        public NumberSeparator(){}
-
+        public NumberSeparator(){
+            this(' ');
+        }
 
         /**
          * @param separator
@@ -32,23 +33,23 @@ public class NumberFormatter {
         }
 
         /**
-         * @param i
+         * @param integer
          * This method return a String after have do a separation every 3 number for a int type number
          * 154861345 -> 154 861 345
          * @return
          */
-        public String transformer(int i) {
-            return this.transformer((long) i);
+        public String transformer(int integer) {
+            return this.transformer((long) integer);
         }
 
         /**
-         * @param l
+         * @param llong
          * This method return a String after have do a separation every 3 number for a long type number
          * 1215348361583515635186515 -> 1 215 348 361 583 515 635 186 515
          * @return
          */
-        public String transformer(long l) {
-            String longToString = Long.toString(l);
+        public String transformer(long llong) {
+            String longToString = Long.toString(llong);
             int length = longToString.length();
             List<Character> characterList = new ArrayList<>();
             int point = 0;
@@ -77,39 +78,51 @@ public class NumberFormatter {
         USA("K", "M", "B", "T");
 
         private List<String> format;
-
+        private char pointChar = '.';
         LanguageFormatter(String... format) {
             this.format = Arrays.asList(format);
         }
 
+
+        /**
+         * Modify the point character
+         * 12461 -> 12x5K
+         * @param pointChar
+         * @return
+         */
+        public LanguageFormatter setPointChar(char pointChar) {
+            this.pointChar = pointChar;
+            return this;
+        }
+
         /**
          * Do conversion from integer
-         * @param i
+         * @param integer
          * @param afterPoint
          * @return
          */
-        public String convert(int i, double afterPoint) {
-            return convert((long) i, afterPoint);
+        public String convert(int integer, double afterPoint) {
+            return convert((long) integer, afterPoint);
         }
 
         /**
          * Do conversion from long
-         * @param l
+         * @param llong
          * @param afterPoint
          * @return
          */
-        public String convert(long l, double afterPoint) {
+        public String convert(long llong, double afterPoint) {
             int size = format.size() - 1;
             afterPoint = Math.pow(10, afterPoint);
-            String string = l + "";
+            String string = llong + "";
             for (int i = 0; i < format.size(); i++) {
                 double length = Math.pow(10, 3 * ((size + 1) - i));
-                if (l >= length) {
-                    string = Math.round((l / length) * afterPoint) / afterPoint + format.get(size - i);
+                if (llong >= length) {
+                    string = Math.round((llong / length) * afterPoint) / afterPoint + format.get(size - i);
                     break;
                 }
             }
-            return string;
+            return string.replace('.', pointChar);
         }
     }
 
@@ -138,34 +151,33 @@ public class NumberFormatter {
 
         /**
          * Do conversion from integer
-         * @param i
+         * @param integer
          * @return
          */
-        public String convert(int i) {
-            return convert((long) i);
+        public String convert(int integer) {
+            return convert((long) integer);
         }
 
         /**
          * Do conversion from long
-         * @param l
+         * @param llong
          * @return
          */
-        public String convert(long l) {
+        public String convert(long llong) {
             StringBuilder stringBuilder = new StringBuilder();
-            while (l > 0) {
+            while (llong > 0) {
                 List<Integer> list = new ArrayList<>(this.map.keySet());
                 Collections.sort(list);
                 Collections.reverse(list);
                 for (Integer integer : list) {
-                    if (!(l - integer >= 0))
+                    if (!(llong - integer >= 0))
                         continue;
                     stringBuilder.append(map.get(integer));
-                    l -= integer;
+                    llong -= integer;
                     break;
                 }
             }
             return stringBuilder.toString();
         }
     }
-
 }
